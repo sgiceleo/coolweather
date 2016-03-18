@@ -5,9 +5,9 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -68,13 +68,15 @@ public class ChooseAreaActivity extends Activity {
 					int position, long id) {
 				if (currentLevel == LEVEL_PROVINCE) {
 					selectedProvince = provinceList.get(position);
-					queryProvince();
+					queryCities();
 				} else if (currentLevel == LEVEL_CITY) {
 					selectedCity = cityList.get(position);
 					queryCounty();
 				}
 			}
 		});
+		
+		queryProvince();
 	}
 
 	// 查询所有省,先查询数据库，如果没有数据，就查询服务器
@@ -136,7 +138,10 @@ public class ChooseAreaActivity extends Activity {
 			address = "http://www.weather.com.cn/data/list3/city" + code
 					+ ".xml";
 		} else {
-			address = "http://www.weather.com.cn/data/list3/city";
+//			System.out.println("#####################");
+//			System.out.println("#####################");
+//			System.out.println("#####################");
+			address = "http://www.weather.com.cn/data/list3/city.xml";
 		}
 		
 		showProgressDialog();
@@ -145,8 +150,11 @@ public class ChooseAreaActivity extends Activity {
 			
 			@Override
 			public void onFinish(String response) {
+//				System.out.println("-------------------");
+//				System.out.println(response);
+//				System.out.println("-------------------");
 				boolean result = false;
-				if("province".equals(type)){
+				if("province".equals(type)){					
 					result = Utility.handleProvincesResponse(coolWeatherDB, response);
 				}else if("city".equals(type)){
 					result = Utility.handleCitiesResponse(coolWeatherDB, response, selectedProvince.getId());
@@ -155,6 +163,9 @@ public class ChooseAreaActivity extends Activity {
 				}
 				
 				if(result){
+//					System.out.println("&&&&&&&&&&&&&&&&&&&&&");
+//					System.out.println(result);
+//					System.out.println("&&&&&&&&&&&&&&&&&&&&&");
 					runOnUiThread(new Runnable() {
 						
 						@Override

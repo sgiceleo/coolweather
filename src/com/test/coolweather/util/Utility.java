@@ -16,6 +16,10 @@ import com.test.coolweather.model.Province;
 public class Utility {
 	// 解析并处理省级数据,将数据存入数据库
 	public synchronized static boolean handleProvincesResponse(CoolWeatherDB coolWeatherDB, String response){
+//		System.out.println("#############");
+//		System.out.println("#############");
+//		System.out.println("#############");
+		
 		if(!TextUtils.isEmpty(response)){
 			String[] allProvinces = response.split(",");
 			if(allProvinces != null && allProvinces.length > 0){
@@ -27,6 +31,7 @@ public class Utility {
 					
 					coolWeatherDB.saveProvince(province);
 				}
+				return true;
 			}
 		}
 		
@@ -47,6 +52,7 @@ public class Utility {
 					
 					coolWeatherDB.saveCity(city);
 				}
+				return true;
 			}
 		}
 		
@@ -68,6 +74,7 @@ public class Utility {
 					coolWeatherDB.saveCounty(county);
 				}
 			}
+			return true;
 		}
 		
 		return false;
